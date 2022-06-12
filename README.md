@@ -8,19 +8,10 @@
 
 ## <u>Membuat Tabel</u>
 
-``
-CREATE TABLE artikel (
-id INT(11) auto_increment,
-judul VARCHAR(200) NOT NULL,
-isi TEXT,
-gambar VARCHAR(200),
-status TINYINT(1) DEFAULT 0,
-slug VARCHAR(200),
-PRIMARY KEY(id)
-);
-``
+`CREATE TABLE artikel ( id INT(11) auto_increment, judul VARCHAR(200) NOT NULL, isi TEXT, gambar VARCHAR(200), status TINYINT(1) DEFAULT 0, slug VARCHAR(200), PRIMARY KEY(id) );`
 
 ## Konfigurasi koneksi database
+
 Selanjutnya membuat konfigurasi untuk menghubungkan dengan database server.
 Konfigurasi dapat dilakukan dengan du acara, yaitu pada file **app/config/database.php**
 atau menggunakan file **.env**. Pada praktikum ini kita gunakan konfigurasi pada file .env.
@@ -28,6 +19,7 @@ atau menggunakan file **.env**. Pada praktikum ini kita gunakan konfigurasi pada
 ![.env](img/.env.png)
 
 ## Membuat Model
+
 Selanjutnya adalah membuat Model untuk memproses data Artikel. Buat file baru pada
 direktori **app/Models** dengan nama **ArtikelModel.php**
 
@@ -41,6 +33,26 @@ protected $table = 'artikel';
 protected $primaryKey = 'id';
 protected $useAutoIncrement = true;
 protected $allowedFields = ['judul', 'isi', 'status', 'slug', 'gambar'];
+}
+```
+
+## Membuat Controller
+
+Buat Controller baru dengan nama **Artikel.php** pada direktori **app/Controllers.**
+
+```php
+<?php
+namespace App\Controllers;
+use App\Models\ArtikelModel;
+class Artikel extends BaseController
+{
+    public function index()
+    {
+        $title = 'Daftar Artikel';
+        $model = new ArtikelModel();
+        $artikel = $model->findAll();
+        return view('artikel/index', compact('artikel', 'title'));
+    }
 }
 ```
 
