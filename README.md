@@ -22,8 +22,25 @@ PRIMARY KEY(id)
 
 ## Konfigurasi koneksi database
 Selanjutnya membuat konfigurasi untuk menghubungkan dengan database server.
-Konfigurasi dapat dilakukan dengan du acara, yaitu pada file app/config/database.php
-atau menggunakan file .env. Pada praktikum ini kita gunakan konfigurasi pada file .env.
+Konfigurasi dapat dilakukan dengan du acara, yaitu pada file **app/config/database.php**
+atau menggunakan file **.env**. Pada praktikum ini kita gunakan konfigurasi pada file .env.
 
 ![.env](img/.env.png)
+
+## Membuat Model
+Selanjutnya adalah membuat Model untuk memproses data Artikel. Buat file baru pada
+direktori **app/Models** dengan nama **ArtikelModel.php**
+
+```php
+<?php
+namespace App\Models;
+use CodeIgniter\Model;
+class ArtikelModel extends Model
+{
+protected $table = 'artikel';
+protected $primaryKey = 'id';
+protected $useAutoIncrement = true;
+protected $allowedFields = ['judul', 'isi', 'status', 'slug', 'gambar'];
+}
+```
 
