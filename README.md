@@ -19,3 +19,11 @@ slug VARCHAR(200),
 PRIMARY KEY(id)
 );
 ``
+
+## Konfigurasi koneksi database
+Selanjutnya membuat konfigurasi untuk menghubungkan dengan database server.
+Konfigurasi dapat dilakukan dengan du acara, yaitu pada file app/config/database.php
+atau menggunakan file .env. Pada praktikum ini kita gunakan konfigurasi pada file .env.
+
+![.env](img/.env.png)
+
