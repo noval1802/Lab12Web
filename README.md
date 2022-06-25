@@ -524,3 +524,89 @@ input[type="file"] {
 Akses menu admin dengan url http://localhost:8080/admin/artikel
 
 ![menu](img/menu.png)
+
+## Menambah Data Artikel
+Tambahkan fungsi/method baru pada Controller Artikel dengan nama add(). 
+```php
+public function add()
+ {
+ // validasi data.
+ $validation = \Config\Services::validation();
+ $validation->setRules(['judul' => 'required']);
+ $isDataValid = $validation->withRequest($this->request)->run();
+ if ($isDataValid)
+ {
+ $artikel = new ArtikelModel();
+ $artikel->insert([
+ 'judul' => $this->request->getPost('judul'),
+ 'isi' => $this->request->getPost('isi'),
+ 'slug' => url_title($this->request->getPost('judul')),
+ ]);
+ return redirect('admin/artikel');
+ }
+ $title = "Tambah Artikel";
+ return view('artikel/form_add', compact('title'));
+ }
+```
+Kemudian buat view untuk form tambah dengan nama **form_add.php**
+```php
+<?= $this->include('template/admin_header'); ?>
+<h2><?= $title; ?></h2>
+<form action="" method="post">
+ <p>
+ <input type="text" name="judul">
+ </p>
+ <p>
+ <textarea name="isi" cols="50" rows="10"></textarea>
+ </p>
+ <p><input type="submit" value="Kirim" class="btn btn-large"></p>
+</form>
+<?= $this->include('template/admin_footer'); ?>
+```
+![tambahArtikel](img/tambahArtikel.png)
+
+## Mengubah Data
+Tambahkan fungsi/method baru pada **Controller Artikel** dengan nama **edit().** 
+```php
+public function edit($id)
+ {
+ $artikel = new ArtikelModel();
+ // validasi data.
+ $validation = \Config\Services::validation();
+ $validation->setRules(['judul' => 'required']);
+ $isDataValid = $validation->withRequest($this->request)->run();
+ if ($isDataValid)
+ {
+ $artikel->update($id, [
+ 'judul' => $this->request->getPost('judul'),
+ 'isi' => $this->request->getPost('isi'),
+ ]);
+ return redirect('admin/artikel');
+ }
+ // ambil data lama
+ $data = $artikel->where('id', $id)->first();
+ $title = "Edit Artikel";
+ return view('artikel/form_edit', compact('title', 'data'));
+ }
+ ```
+
+ Kemudian buat view untuk form tambah dengan nama **form_edit.php**
+```php
+ <?= $this->include('template/admin_header'); ?>
+<h2><?= $title; ?></h2>
+<form action="" method="post">
+ <p>
+ <input type="text" name="judul" value="<?= $data['judul'];?>" >
+ </p>
+ <p>
+ <textarea name="isi" cols="50" rows="10"><?=
+$data['isi'];?></textarea>
+ </p>
+ <p><input type="submit" value="Kirim" class="btn btn-large"></p>
+</form>
+<?= $this->include('template/admin_footer'); ?>
+```
+![edit/1](img/edit.png)
+
+# Menghapus Data
+Tambahkan fungsi/method baru pada **Controller Artikel** dengan nama **delete()**. 
